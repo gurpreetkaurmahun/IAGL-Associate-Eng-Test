@@ -1,5 +1,4 @@
 
-
 let todoList = {
   todos: [
     {
@@ -16,7 +15,48 @@ let todoList = {
     }
   ]
 };
+//
+
 
 module.exports = {
-  getAllTodos: () => Promise.resolve(todoList)
+  getAllTodos: () => {
+    // Log the full list for debugging
+    console.log("📤 getAllTodos returning:", todoList.todos);
+    return Promise.resolve(todoList.todos);
+  },
+
+  //1
+  getTodoById: (id) => {
+    const todoFromRepo = todoList.todos.find(todo => todo.id === id);
+    console.log(`📤 getTodoById(${id}) returning:`, todoFromRepo);
+    return Promise.resolve(todoFromRepo || null);
+  },
+
+  saveNewTodo: (todo) => {
+    todoList.todos.push(todo);
+    return Promise.resolve(todo);
+  },
+
+  updateStatus: (id, isCompleted) => {
+    const todo = todoList.todos.find(todo => todo.id === id);
+    if (todo) {
+      todo.isCompleted = isCompleted;
+      return Promise.resolve(todo);
+    } else {
+      return Promise.reject(new Error(`Todo with ID ${id} not found`));
+    }
+  },
+
+  deleteTodoById: (id) => {
+    const index = todoList.todos.findIndex(todo => todo.id === id);
+
+    if (index === -1) {
+      return Promise.resolve(null);
+    }
+
+    const deletedTodo = todoList.todos[index];
+    todoList.todos.splice(index, 1);
+    return Promise.resolve(deletedTodo);
+  }
+
 };
