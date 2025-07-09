@@ -1,13 +1,39 @@
 import axios from "axios";
-import { FETCH_TODOS } from "./types";
+import { apiClient } from "../api/ApiClient";
 
-export function fetchTodos() {
+import { FETCH_TODOS,ADD_TODO,
+      
+      } 
+        from "./types";
+
+import {retrieveAllToDos} from "../component/TodoApi/TodoApi";
+
+export function fetchTodos() 
+{
+
   return function(dispatch) {
-    return axios.get("http://localhost:9091/api/todo").then(({ data }) => {
-      dispatch(setTodos(data));
-    });
+    return retrieveAllToDos().then(({ data }) => {
+
+        console.log("Fetched todos after update:", data); 
+        dispatch(setTodos(data));
+      })
+      .catch((error) => {
+        console.error("Error fetching todos:", error);
+   
+      });;
   };
 }
+export const addTodos = (title, description) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await apiClient.post("/", { title, description });
+      dispatch({ type: ADD_TODO, payload: data });
+    } catch (error) {
+      console.error("Error adding todo:", error);
+   
+    }
+  };
+};
 
 function setTodos(data) {
   return {

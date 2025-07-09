@@ -1,0 +1,29 @@
+.App {
+    text-align: center;
+
+  }
+
+  label, input, button{
+    margin: 5px;
+    padding: 5px
+}
+
+ .todo_label{
+
+    margin-left: 48%;
+
+    text-align: center;
+ }
+ .todo_heading{
+    margin-left: 10%;
+
+    text-align: center;
+ } 
+
+
+footer{
+    bottom: 0;
+    position: absolute;
+    width: 90%;
+    height: 40px;
+}
