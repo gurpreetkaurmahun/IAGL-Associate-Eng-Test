@@ -6,11 +6,24 @@ const todoService = require('./service/todo')(repository);
 const server = () => {
   const server = express();
   server.use(express.json());
+  
   server.use(cors());
+  const corsOptions = {
+    origin: "http://localhost:3000", 
+    methods: "GET,POST,PATCH,DELETE",
+    credentials: true
+  };
 
-  server.get('/api/todo', async (req, res) => {
-    res.json(await todoService.getTodos());
-  });
+  server.use(cors(corsOptions));
+  
+  server.get('/api/todos', async (req, res) => {
+    try {
+        const todos = await todoService.getAllTodos();
+        res.status(200).json(todos);
+    } catch (error) {
+        res.status(error.status).json({ error: error.externalMessage});
+    }
+});
 
   /**
   POST /api/todo
