@@ -3,21 +3,21 @@ import { connect } from 'react-redux';
 import { useNavigate, useParams } from "react-router-dom"
 import { Form, Formik, Field, ErrorMessage } from "formik"
 import { useDispatch, useSelector } from 'react-redux';
-import "./Todo.css";
 
-import { addTodos } from "../actions";
 
-function NewTodo(){
+import { addTodos, updateToDosStatus } from "../actions";
 
-    const[message,setMessage]=useState();
+function NewToDo(){
+
+
     const dispatch=useDispatch();
     const navigate=useNavigate();
     const {id} = useParams();
 
 
-    const todo = useSelector((state) =>
-    id ? state.data.find((todo) => String(todo.id) === String(id)) : null
-  );
+    const todo = useSelector((state) =>id ? state.data.find((todo) => String(todo.id) === String(id)) : null);
+    
+    const error = useSelector((state) => state.error);
 
     const [initialValues,setInitialValues]=useState({
         id:"",
@@ -32,7 +32,8 @@ function NewTodo(){
           setInitialValues({
             id:todo.id,
             title: todo.title || "",
-            description: todo.description || ""
+            description: todo.description || "",
+            dueDate: todo.dueDate ? todo.dueDate.slice(0, 10) : ""
           });
         }
       }, [id, todo]);
@@ -42,7 +43,20 @@ function NewTodo(){
 function onSubmit(values, { setSubmitting }) {
 
     console.log("Values",values);
-    dispatch(addTodos(values.title, values.description))
+    if (id) {
+        dispatch(updateToDosStatus(id, values.isCompleted))
+            .then(() => {
+                console.log("updated values are",values);
+                setSubmitting(false);
+                navigate("/");
+            }).catch(
+                error => {
+                    console.log(error)
+                    setMessage(error.ErrorMessage)
+                    setTimeout(()=> setMessage(""), 2000)
+            });
+    } else {
+        dispatch(addTodos(values.title, values.description, values.dueDate))
             .then(() => {
                 setSubmitting(false);
                 navigate("/");
@@ -50,9 +64,8 @@ function onSubmit(values, { setSubmitting }) {
             .catch((err) => {
                 console.error("Error Adding todo", err);
                 setSubmitting(false);
-    });
-    
-
+            });
+    }
 }
     function validate(values){
         let errors = {}
@@ -79,7 +92,7 @@ function onSubmit(values, { setSubmitting }) {
                     (props) => {
                         return (
                             <Form>
-                                {message && <div className="alert alert-danger">{message}</div>}
+                                 {error && <div className="alert alert-danger">{error}</div>}
 
                                 <ErrorMessage
                                     name="description"
@@ -116,4 +129,4 @@ function onSubmit(values, { setSubmitting }) {
 
 export default connect(
   null
-)(NewTodo);
+)(NewToDo);

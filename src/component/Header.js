@@ -9,17 +9,7 @@ function HeaderComponent() {
             <Link className="navbar-brand ms-2 fs-2 fw-bold text-black" to="/">
               My Todo App
             </Link>
-            <div className="collapse navbar-collapse">
-              <ul className="navbar-nav">
-                <li className="nav-item fs-5 px-2">
-                  <Link className="nav-link" to="/create" style={{ color: "black" }}>
-                    New Todo
-                  </Link>
-        
-                </li>
-              </ul>
-            </div>
-          
+         
           </nav>
         </div>
       </div>

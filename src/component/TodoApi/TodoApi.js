@@ -5,14 +5,17 @@ const retrieveAllToDos=()=>{
    return apiClient.get("/");
 }
 
+const addToDo = (title, description) => {
+    return apiClient.post("/", { title, description });
+  }
+  
+
 const updateToDo=(id,isCompleted)=>{
    return apiClient.patch(`/${id}`, { isCompleted });
 }
 
 const deleteToDo=(id)=>{
-    return apiClient.delete(`/${id}`);
- }
+   return apiClient.delete(`/${id}`);
+}
 
-
-
-export {retrieveAllToDos,updateToDo,deleteToDo};
+export {retrieveAllToDos,addToDo,updateToDo,deleteToDo};
