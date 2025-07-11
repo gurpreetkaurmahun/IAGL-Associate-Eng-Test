@@ -1,9 +1,13 @@
-# dependencies
-node_modules/
+# OS
+.DS_Store
 
-# metro / React Native cache (if present)
-./.cache/
+# IDE
+.idea/
 
-# build output
-build/
+# Build directory
 dist/
+build/
+
+# Dependency directories
+backend/node_modules/
+node_modules/
