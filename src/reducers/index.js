@@ -2,10 +2,11 @@ import { FETCH_TODOS,ADD_TODO,DELETE_TODO ,UPDATE_TODO_STATUS,CATCH_TODO_ERROR} 
 
 
 const initialState = {
-  data: []
+  data: [],
+  error: null,
+  isLoadingData: false,
 };
 
-//error/success message state.
 
 export default function(state = initialState, action) {
   switch (action.type) {

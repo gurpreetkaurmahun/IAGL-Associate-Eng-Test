@@ -1,0 +1,9 @@
+# dependencies
+node_modules/
+
+# metro / React Native cache (if present)
+./.cache/
+
+# build output
+build/
+dist/
